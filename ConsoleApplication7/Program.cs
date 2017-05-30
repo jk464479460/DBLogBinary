@@ -111,7 +111,7 @@ namespace ConsoleApplication7
                     command.CommandText = @"SELECT allocunitname,operation,[RowLog Contents 0] as r0,[RowLog Contents 1]as r1 
                                 from::fn_dblog (null, null)   
                                 where allocunitname like 'dbo.log_test%'and
-                                operation in('LOP_INSERT_ROWS','LOP_DELETE_ROWS')";
+                                operation in('LOP_INSERT_ROWS','LOP_DELETE_ROWS', 'LOP_MODIFY_ROW')";
                     System.Data.SqlClient.SqlDataReader reader = command.ExecuteReader();
                     Datacolumn[] columns = new Datacolumn[]
                        {
