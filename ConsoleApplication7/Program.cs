@@ -39,6 +39,11 @@ namespace ConsoleApplication7
             {
                 switch (c.DataType)
                 {
+                    case System.Data.SqlDbType.NChar:
+                        //读取定长字符串，需要根据表结构指定长度
+                        c.Value = System.Text.Encoding.Default.GetString(data, index, c.Length);
+                        index += c.Length;
+                        break;
                     case System.Data.SqlDbType.Char:
                         //读取定长字符串，需要根据表结构指定长度
                         c.Value = System.Text.Encoding.Default.GetString(data, index, c.Length);
@@ -110,16 +115,18 @@ namespace ConsoleApplication7
                     //察看dbo.log_test对象的sql日志
                     command.CommandText = @"SELECT allocunitname,operation,[RowLog Contents 0] as r0,[RowLog Contents 1]as r1 
                                 from::fn_dblog (null, null)   
-                                where allocunitname like 'dbo.log_test%'and
-                                operation in('LOP_INSERT_ROWS','LOP_DELETE_ROWS', 'LOP_MODIFY_ROW')";
+                                where allocunitname like 'dbo.Jmeter_tb%'and
+                                operation in('LOP_INSERT_ROWS','LOP_DELETE_ROWS'/*, 'LOP_MODIFY_ROW'*/)";
                     System.Data.SqlClient.SqlDataReader reader = command.ExecuteReader();
                     Datacolumn[] columns = new Datacolumn[]
                        {
-                            new Datacolumn("id", System.Data.SqlDbType.Int),
-                            new Datacolumn("code", System.Data.SqlDbType.Char,10),
-                            new Datacolumn("name", System.Data.SqlDbType.VarChar),
-                            new Datacolumn("date", System.Data.SqlDbType.DateTime),
-                            new Datacolumn("memo", System.Data.SqlDbType.VarChar)
+                            //new Datacolumn("id", System.Data.SqlDbType.Int),
+                            //new Datacolumn("code", System.Data.SqlDbType.Char,10),
+                            //new Datacolumn("name", System.Data.SqlDbType.VarChar),
+                            //new Datacolumn("date", System.Data.SqlDbType.DateTime),
+                            //new Datacolumn("memo", System.Data.SqlDbType.VarChar)
+                             new Datacolumn("id", System.Data.SqlDbType.Int),
+                            new Datacolumn("code", System.Data.SqlDbType.NChar,10),
                        };
                     while (reader.Read())
                     {
